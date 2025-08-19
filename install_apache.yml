@@ -1,33 +1,16 @@
----
-- name: Apache server installed
-  hosts: web
+- name: Install Apache on a chosen host
+  hosts: "{{ target_host | default('all') }}"
+  become: true
+  gather_facts: true
 
   tasks:
-  - name: latest Apache version installed
-    yum:
-      name: httpd
-      state: latest
+    - name: Install Apache
+      ansible.builtin.package:
+        name: "{{ 'httpd' if ansible_facts.os_family == 'RedHat' else 'apache2' }}"
+        state: present
 
-  - name: latest firewalld version installed
-    yum:
-      name: firewalld
-      state: latest
-
-  - name: firewalld enabled and running
-    service:
-      name: firewalld
-      enabled: true
-      state: started
-
-  - name: firewalld permits http service
-    firewalld:
-      service: http
-      permanent: true
-      state: enabled
-      immediate: yes
-
-  - name: Apache enabled and running
-    service:
-      name: httpd
-      enabled: true
-      state: started
+    - name: Enable & start service
+      ansible.builtin.service:
+        name: "{{ 'httpd' if ansible_facts.os_family == 'RedHat' else 'apache2' }}"
+        state: started
+        enabled: true
