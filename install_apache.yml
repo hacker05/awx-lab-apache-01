@@ -3,7 +3,7 @@
   become: true
   gather_facts: true
   vars:
-    ansible_python_interpreter: /usr/local/bin/python3.9  # Fix cho DNF issue
+    ansible_python_interpreter: /usr/bin/python3  # Fix cho DNF issue 
   tasks:
     - name: Install Apache
       ansible.builtin.package:
