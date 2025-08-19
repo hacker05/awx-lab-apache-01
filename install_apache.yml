@@ -3,9 +3,13 @@
   become: true
   gather_facts: true
   tasks:
-    - name: Update apt package cache
-      apt:
-        update_cache: yes
+    - name: Update package cache (Debian/Ubuntu only)
+      ansible.builtin.apt:
+        update_cache: true
+        cache_valid_time: 3600
+      when: 
+        - ansible_facts.os_family == "Debian"
+        - ansible_facts.pkg_mgr == "apt"
 
     - name: Install Apache
       apt:
