@@ -3,12 +3,16 @@
   become: true
   gather_facts: true
   tasks:
+    - name: Update apt package cache
+      apt:
+        update_cache: yes
+
     - name: Install Apache
       apt:
         name: apache2
-        state: latest
-  handlers:
-    - name: restart apache2
+        state: present
+
+    - name: Start Apache service
       service:
         name: apache2
-        state: restarted
+        state: started
