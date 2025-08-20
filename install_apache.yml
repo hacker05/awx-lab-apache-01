@@ -4,10 +4,9 @@
   gather_facts: true
   tasks:
     - name: Install Apache
-      ansible.builtin.package:
-        name: apache
-        state: present
-
+      ansible.builtin.command: dnf install -y httpd
+      args:
+        warn: no
     - name: Start Apache service
       service:
         name: apache2
