@@ -7,7 +7,4 @@
       ansible.builtin.command: dnf install -y httpd
       args:
         warn: no
-    - name: Start Apache service
-      service:
-        name: apache2
-        state: started
+
